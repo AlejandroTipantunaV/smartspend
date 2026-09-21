@@ -1,0 +1,159 @@
+/* ============================================================
+   SmartSpend - Estilos Globales y Accesibilidad (WCAG 2.2)
+   ============================================================ */
+
+/* 1. Variables de Color (Alto Contraste) y Tipografía */
+:root {
+    --primary-color: #0d6efd;
+    --primary-dark: #0a58ca;
+    --secondary-color: #198754;
+    --danger-color: #dc3545;
+    --bg-light: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --focus-ring: #0d6efd;
+    --font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 2. Reset Básico y Modelo de Caja */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 3. Indicadores Visibles de Foco (Teclado / Accesibilidad WCAG) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+}
+
+/* 4. Enlace de Salto (Skip Link) para lectores de pantalla */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 10px;
+    background: var(--primary-color);
+    color: #ffffff;
+    padding: 8px 16px;
+    z-index: 1000;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 10px;
+}
+
+/* 5. Layout Semántico y Contenedores */
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.main-header {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.main-nav a:hover {
+    color: var(--primary-color);
+}
+
+.content {
+    flex: 1;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.main-footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 1.5rem 0;
+    margin-top: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* 6. Tarjetas y Paneles Informativos */
+.welcome-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.status-card {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background-color: var(--bg-light);
+    border-left: 5px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+.status-card h3 {
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+/* 7. Adaptabilidad Móvil (Media Queries) */
+@media (max-width: 600px) {
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .main-nav ul {
+        justify-content: center;
+    }
+}
