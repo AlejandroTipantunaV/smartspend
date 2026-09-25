@@ -1,0 +1,53 @@
+{
+    "menu_items": [
+        {
+            "id": "home",
+            "label": "Inicio",
+            "url": "index.php",
+            "icon": "lucide:home",
+            "auth": "all"
+        },
+        {
+            "id": "login",
+            "label": "Iniciar Sesión",
+            "url": "views/auth/login.php",
+            "icon": "lucide:log-in",
+            "auth": "guest"
+        },
+        {
+            "id": "register",
+            "label": "Registrarse",
+            "url": "views/auth/register.php",
+            "icon": "lucide:user-plus",
+            "auth": "guest"
+        },
+        {
+            "id": "dashboard",
+            "label": "Dashboard",
+            "url": "views/dashboard.php",
+            "icon": "lucide:layout-dashboard",
+            "auth": "user"
+        },
+        {
+            "id": "transactions",
+            "label": "Transacciones",
+            "url": "views/transactions.php",
+            "icon": "lucide:arrow-left-right",
+            "auth": "user"
+        },
+        {
+            "id": "profile",
+            "label": "Perfil",
+            "url": "views/profile.php",
+            "icon": "lucide:user",
+            "auth": "user"
+        },
+        {
+            "id": "logout",
+            "label": "Cerrar Sesión",
+            "url": "controllers/AuthController.php?action=logout",
+            "icon": "lucide:log-out",
+            "auth": "user"
+        }
+    ]
+}

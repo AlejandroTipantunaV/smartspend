@@ -1,0 +1,43 @@
+.visually-hidden,
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.skip-link {
+    position: absolute;
+    top: -120px;
+    left: 10px;
+    background: var(--primary-dark);
+    color: var(--text-white);
+    padding: 0.75rem 1.25rem;
+    z-index: 99999;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    transition: top var(--transition-speed) ease-in-out;
+    box-shadow: var(--shadow-md);
+}
+
+.skip-link:focus-visible {
+    top: 0;
+    outline: 3px solid var(--warning-color);
+    outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
