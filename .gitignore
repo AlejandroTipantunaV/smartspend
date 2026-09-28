@@ -1,0 +1,41 @@
+# ============================================================
+# SmartSpend - Archivos e IDEs ignorados en Git
+# ============================================================
+
+# 1. Configuración de Entorno Local y Seguridad
+.env
+.env.local
+*.env
+
+# 2. Configuración de IDEs y Editores de Código
+.vscode/
+.idea/
+*.suo
+*.user
+*.useros
+*.sln
+*.swp
+
+# 3. Archivos del Sistema Operativo
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 4. Logs del Servidor y Apache/PHP
+*.log
+error_log
+php_errors.log
+
+# 5. Dependencias de PHP (si usan Composer más adelante)
+/vendor/
+
+# 6. Archivos temporales o de prueba local
+/tmp/
+/temp/
+test_*.php
+
+# 7. Reglas para Frontend (si llegan a usar Node/npm/Vite)
+node_modules/
+.npm/
+.cache/
