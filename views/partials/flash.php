@@ -1,20 +1,19 @@
 <?php
-/**
- * Partial: mensaje flash de sesión.
- * Requiere: $flash (array|null) desde pull_flash().
- */
+/** Renders a session flash message as a floating toast using the generic renderAlert() system. */
+require_once __DIR__ . '/../../includes/alerts.php';
+
 if (empty($flash) || !is_array($flash)) {
     return;
 }
 
-$type = $flash['type'] ?? 'success';
+$type    = $flash['type']    ?? 'info';
 $message = $flash['message'] ?? '';
-$allowed = ['success', 'danger'];
+$title   = $flash['title']   ?? null;
 
-if (!in_array($type, $allowed, true) || $message === '') {
+if ($message === '') {
     return;
 }
 ?>
-<div class="alert alert-<?php echo e($type); ?>" role="alert">
-    <?php echo e($message); ?>
-</div>
+<aside class="toast-container toast-top-right" aria-label="Notificaciones del sistema" aria-live="polite">
+    <?php echo renderAlert($message, $type, $title); ?>
+</aside>

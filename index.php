@@ -17,6 +17,7 @@ try {
     $db_status = 'Error: ' . $e->getMessage();
 }
 
+$pageTitle = "SmartSpend - Inicio";
 $basePath = '';
 include __DIR__ . '/includes/header.php';
 ?>

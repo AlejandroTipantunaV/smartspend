@@ -12,12 +12,13 @@ if (!function_exists('require_login')) {
     /** Exige sesión y devuelve el id del usuario. */
     function require_login(string $redirectTo = '../views/auth/login.php'): int
     {
-        if (empty($_SESSION['id_usuario'])) {
+        $userId = $_SESSION['id_usuario'] ?? $_SESSION['user_id'] ?? null;
+        if (empty($userId)) {
             header('Location: ' . $redirectTo);
             exit;
         }
 
-        return (int) $_SESSION['id_usuario'];
+        return (int) $userId;
     }
 }
 
