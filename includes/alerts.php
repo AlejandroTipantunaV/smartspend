@@ -40,8 +40,8 @@ if (!function_exists('renderAlert')) {
     }
 }
 
-if (!empty($_SESSION['flash_message'])) {
-    $flash = $_SESSION['flash_message'];
+if (!empty($_SESSION['flash_message']) || !empty($_SESSION['flash'])) {
+    $flash = $_SESSION['flash_message'] ?? $_SESSION['flash'];
     $message = is_array($flash) ? ($flash['message'] ?? '') : $flash;
     $type = is_array($flash) ? ($flash['type'] ?? 'info') : 'info';
     $title = is_array($flash) ? ($flash['title'] ?? null) : null;
@@ -56,6 +56,6 @@ if (!empty($_SESSION['flash_message'])) {
         echo '</aside>';
     }
     
-    unset($_SESSION['flash_message']);
+    unset($_SESSION['flash_message'], $_SESSION['flash']);
 }
 ?>

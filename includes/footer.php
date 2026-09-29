@@ -12,7 +12,13 @@
             </nav>
         </div>
     </footer>
-
     <script src="<?php echo $basePath; ?>assets/js/main.js"></script>
+    <?php if (!empty($extraScripts) && is_array($extraScripts)): ?>
+        <?php foreach ($extraScripts as $script): ?>
+            <?php if ($script !== 'assets/js/main.js'): ?>
+                <script src="<?php echo (isset($basePath) ? htmlspecialchars($basePath) : '') . htmlspecialchars($script); ?>"></script>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </body>
 </html>

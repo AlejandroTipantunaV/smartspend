@@ -42,6 +42,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Auto-submit en filtro de tipo de transacción
+    const filtro = document.getElementById('filtro-tipo');
+    if (filtro && filtro.form) {
+        filtro.addEventListener('change', () => {
+            filtro.form.submit();
+        });
+    }
+
+    // Confirmación al eliminar transacción
+    document.querySelectorAll('form.js-confirm-delete').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            const message = form.getAttribute('data-confirm') || '¿Confirmar eliminación?';
+            if (!window.confirm(message)) {
+                event.preventDefault();
+            }
+        });
+    });
+
     initToastDismissal();
 });
 

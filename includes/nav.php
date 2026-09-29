@@ -1,6 +1,6 @@
 <?php
 $currentPage = basename($_SERVER['PHP_SELF']);
-$isLoggedIn = isset($_SESSION['user_id']);
+$isLoggedIn = !empty($_SESSION['user_id']) || !empty($_SESSION['id_usuario']);
 
 $jsonPath = __DIR__ . '/../config/navigation.json';
 $menuData = [];
@@ -33,8 +33,13 @@ $navItems = array_filter($allItems, function($item) use ($isLoggedIn) {
     <ul id="primary-menu" class="nav-menu">
         <?php foreach ($navItems as $item): ?>
             <?php
-            $targetUrl = $basePath . $item['url'];
-            $itemPageName = basename($item['url']);
+            $rawUrl = $item['url'];
+            if ($basePath === '../' && strpos($rawUrl, 'views/') === 0) {
+                $targetUrl = substr($rawUrl, 6);
+            } else {
+                $targetUrl = $basePath . $rawUrl;
+            }
+            $itemPageName = basename($rawUrl);
             $isActive = ($currentPage === $itemPageName);
             ?>
             <li>

@@ -1,15 +1,18 @@
 <?php
+/** Global layout header. Detects $basePath, loads CSS modules with cache-busting, renders nav and opens <main>. */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Detect the correct relative base path to the project root based on
+// the physical location of the calling view file (root / views/ / views/auth/).
 $basePath = '';
 if (file_exists('assets/css/styles.css')) {
-    $basePath = '';
+    $basePath = '';          // Called from project root (index.php)
 } elseif (file_exists('../assets/css/styles.css')) {
-    $basePath = '../';
+    $basePath = '../';       // Called from views/
 } elseif (file_exists('../../assets/css/styles.css')) {
-    $basePath = '../../';
+    $basePath = '../../';    // Called from views/auth/
 }
 
 $pageTitle = $pageTitle ?? 'SmartSpend - Control y Gestión de Gastos Personales';
@@ -25,7 +28,17 @@ $pageTitle = $pageTitle ?? 'SmartSpend - Control y Gestión de Gastos Personales
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     
-    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/styles.css?v=<?php echo time(); ?>">
+    <?php
+    // Timestamp-based cache buster — forces the browser to fetch the
+    // latest version of each CSS module on every page load.
+    $v = time();
+    ?>
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/variables.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/accessibility.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/layout.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/alerts.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/cards.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/forms.css?v=<?php echo $v; ?>">
 </head>
 <body>
 

@@ -7,7 +7,9 @@ $action = $_REQUEST['action'] ?? '';
 
 if ($action === 'login') {
     $_SESSION['user_id'] = 1;
-    $_SESSION['user_name'] = 'Usuario SmartSpend';
+    $_SESSION['id_usuario'] = 1;
+    $_SESSION['user_name'] = 'Jonathan';
+    $_SESSION['nombre'] = 'Jonathan';
     $_SESSION['flash_message'] = [
         'message' => '¡Bienvenido de nuevo a SmartSpend!',
         'type' => 'success'
@@ -18,7 +20,9 @@ if ($action === 'login') {
 
 if ($action === 'register') {
     $_SESSION['user_id'] = 1;
+    $_SESSION['id_usuario'] = 1;
     $_SESSION['user_name'] = 'Nuevo Usuario';
+    $_SESSION['nombre'] = 'Nuevo Usuario';
     $_SESSION['flash_message'] = [
         'message' => '¡Cuenta creada exitosamente! Bienvenido a SmartSpend.',
         'type' => 'success'
