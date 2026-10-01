@@ -100,10 +100,10 @@ include __DIR__ . '/../../includes/header.php';
                                         Editar
                                     </a>
                                     <form method="POST"
-                                          action="<?php echo e($basePath); ?>
-<?= csrf_field() ?>controllers/CategoryController.php?action=delete"
+                                          action="<?php echo e($basePath); ?>controllers/CategoryController.php?action=delete"
                                           class="inline-form js-confirm-delete"
                                           data-confirm="¿Eliminar esta categoría? Si tiene transacciones asignadas no podrás eliminarla.">
+                                        <?= csrf_field() ?>
                                         <input type="hidden"
                                                name="id_categoria"
                                                value="<?php echo (int) $c['id_categoria']; ?>">

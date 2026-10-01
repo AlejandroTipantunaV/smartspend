@@ -18,7 +18,18 @@ $pageTitle = $pageTitle ?? 'SmartSpend - Control y Gestión de Gastos Personales
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     
-    <link rel="stylesheet" href="<?= e($basePath) ?>assets/css/styles.css?v=2">
+    <?php
+    // Timestamp-based cache buster — forces the browser to fetch the
+    // latest version of each CSS module on every page load.
+    $v = time();
+    ?>
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/variables.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/accessibility.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/layout.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/alerts.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/cards.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/forms.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/dashboard.css?v=<?php echo $v; ?>">
 </head>
 <body>
 
