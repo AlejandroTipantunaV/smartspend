@@ -139,7 +139,7 @@ class TransactionController
             $errors[] = 'Ingrese una fecha válida.';
         }
 
-        if (empty($errors) && !$this->categories->belongsToTipo($idCategoria, $tipo)) {
+        if (empty($errors) && !$this->categories->belongsToType($idCategoria, $tipo)) {
             $errors[] = 'La categoría no corresponde al tipo seleccionado.';
         }
 
