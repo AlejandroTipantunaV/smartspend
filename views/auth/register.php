@@ -1,5 +1,5 @@
 <!-- views/auth/register.php -->
-<?php 
+<?php
 session_start();
 if (isset($_SESSION['user_id'])) {
     header("Location: ../dashboard.php");
@@ -44,7 +44,7 @@ include_once __DIR__ . '/../../includes/header.php';
             <button type="submit" class="btn-primary">
                 Crear Cuenta
             </button>
-        </form>
+</form>
 
         <p class="text-center" style="margin-top: 1.5rem; color: var(--text-muted);">
             ¿Ya tienes cuenta? <a href="login.php" class="auth-link">Inicia Sesión</a>

@@ -1,5 +1,5 @@
 <!-- views/auth/login.php -->
-<?php 
+<?php
 session_start();
 if (isset($_SESSION['user_id'])) {
     header("Location: ../dashboard.php");
@@ -40,7 +40,7 @@ require_once __DIR__ . '/../../includes/header.php';
             <button type="submit" class="btn-primary">
                 Entrar
             </button>
-        </form>
+</form>
 
         <p class="text-center auth-footer-text">
             ¿No tienes cuenta? <a href="register.php" class="auth-link">Regístrate aquí</a>

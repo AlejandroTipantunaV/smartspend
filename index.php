@@ -36,11 +36,11 @@ include 'includes/header.php';
 
         <!-- Estado del Sistema -->
         <div class="status-card centered-card text-left">
-            <h3>Estado del Sistema</h3>
+        <h3>Estado del Sistema</h3>
             <p><strong>Base de Datos:</strong> <?= htmlspecialchars($db_status) ?></p>
             <p><strong>Categorías Registradas:</strong> <?= count($categorias) ?></p>
-        </div>
-    </section>
+    </div>
+</section>
 </main>
 
 <?php include 'includes/footer.php'; ?>
