@@ -18,7 +18,7 @@ include __DIR__ . '/../../includes/header.php';
 
 <section class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
     <div>
-        <h2>Administrar Categorías</h2>
+        <h1>Administrar Categorías</h1>
         <p class="text-muted">Gestiona las categorías de tus ingresos y gastos.</p>
     </div>
     <a href="create.php" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
@@ -88,9 +88,9 @@ include __DIR__ . '/../../includes/header.php';
                             </td>
                             <td data-label="Estado">
                                 <?php if ($isActive): ?>
-                                    <span class="badge" style="background-color: #e0f2f1; color: #00897b;">Activa</span>
+                                    <span class="badge" style="background-color: #e0f2f1; color: #00695c;">Activa</span>
                                 <?php else: ?>
-                                    <span class="badge" style="background-color: #eeeeee; color: #757575;">Inactiva</span>
+                                    <span class="badge" style="background-color: #eeeeee; color: #595959;">Inactiva</span>
                                 <?php endif; ?>
                             </td>
                             <td data-label="Acciones" class="text-right">
@@ -100,7 +100,8 @@ include __DIR__ . '/../../includes/header.php';
                                         Editar
                                     </a>
                                     <form method="POST"
-                                          action="<?php echo e($basePath); ?>controllers/CategoryController.php?action=delete"
+                                          action="<?php echo e($basePath); ?>
+<?= csrf_field() ?>controllers/CategoryController.php?action=delete"
                                           class="inline-form js-confirm-delete"
                                           data-confirm="¿Eliminar esta categoría? Si tiene transacciones asignadas no podrás eliminarla.">
                                         <input type="hidden"
@@ -119,6 +120,6 @@ include __DIR__ . '/../../includes/header.php';
 </section>
 
 <?php
-$extraScripts = ['https://code.iconify.design/3/3.1.0/iconify.min.js', '../../assets/js/categories.js'];
+$extraScripts = ['assets/js/categories.js'];
 include __DIR__ . '/../../includes/footer.php';
 ?>

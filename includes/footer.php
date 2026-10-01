@@ -6,8 +6,8 @@
             
             <nav aria-label="Navegación secundaria del pie de página">
                 <ul class="footer-nav">
-                    <li><a href="#accessibility" class="footer-link">Declaración de Accesibilidad (WCAG 2.2)</a></li>
-                    <li><a href="#terms" class="footer-link">Términos del Servicio</a></li>
+                    <li><a href="<?= e($basePath) ?>views/about.php#accessibility" class="footer-link">Declaración de Accesibilidad (WCAG 2.2)</a></li>
+                    <li><a href="<?= e($basePath) ?>views/about.php#terms" class="footer-link">Términos del Servicio</a></li>
                 </ul>
             </nav>
         </div>

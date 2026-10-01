@@ -43,7 +43,7 @@ $navItems = array_filter($allItems, function($item) use ($isLoggedIn) {
             aria-expanded="false" 
             aria-controls="primary-menu" 
             aria-label="Abrir menú de navegación">
-        <span class="iconify" data-icon="lucide:menu" aria-hidden="true"></span>
+        <span aria-hidden="true">☰</span>
     </button>
 
     <ul id="primary-menu" class="nav-menu">
@@ -58,12 +58,19 @@ $navItems = array_filter($allItems, function($item) use ($isLoggedIn) {
             $isActive = ($item['id'] === $currentId);
             ?>
             <li>
+                <?php if ($item['id'] === 'logout'): ?>
+                <form method="post" action="<?= e($basePath) ?>controllers/AuthController.php">
+                    <?= csrf_field() ?><input type="hidden" name="action" value="logout">
+                    <button class="nav-link" type="submit">Cerrar sesión</button>
+                </form>
+                <?php else: ?>
                 <a href="<?php echo htmlspecialchars($targetUrl); ?>" 
                    class="nav-link <?php echo $isActive ? 'active' : ''; ?>"
                    <?php echo $isActive ? 'aria-current="page"' : ''; ?>>
                     <span class="iconify nav-icon" data-icon="<?php echo htmlspecialchars($item['icon']); ?>" aria-hidden="true"></span>
                     <span><?php echo htmlspecialchars($item['label']); ?></span>
                 </a>
+                <?php endif; ?>
             </li>
         <?php endforeach; ?>
     </ul>

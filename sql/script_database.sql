@@ -90,7 +90,7 @@ INSERT INTO `categorias` (`nombre_categoria`, `tipo`, `descripcion`, `icono`, `c
 -- Usuario de prueba inicial
 -- Nota: La contraseña en texto plano es 'password123', encriptada con bcrypt (password_hash)
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `correo`, `password`) VALUES
-(1, 'Gabriel Tipantuña', 'gabriel@ejemplo.com', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe1e82K1.fE2W5KzP5oU1F0/y4R3Zq79C');
+(1, 'Gabriel Tipantuña', 'gabriel@ejemplo.com', '$2y$10$9uhYjscXM3gNVpldtaOJY.oavvvy6sQ.gRg/KRzpkQPsrA/t5m6Re');
 
 -- Movimientos de prueba iniciales para el usuario 1
 INSERT INTO `transacciones` (`id_usuario`, `id_categoria`, `tipo`, `monto`, `concepto`, `fecha_transaccion`) VALUES

@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isExpanded = mobileNavToggle.getAttribute('aria-expanded') === 'true';
             
             mobileNavToggle.setAttribute('aria-expanded', !isExpanded);
+            mobileNavToggle.setAttribute('aria-label', isExpanded ? 'Abrir menú de navegación' : 'Cerrar menú de navegación');
             primaryNavMenu.classList.toggle('is-active');
 
             const toggleIcon = mobileNavToggle.querySelector('.iconify');
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (event.key === 'Escape' && primaryNavMenu.classList.contains('is-active')) {
                 primaryNavMenu.classList.remove('is-active');
                 mobileNavToggle.setAttribute('aria-expanded', 'false');
+                mobileNavToggle.setAttribute('aria-label', 'Abrir menú de navegación');
                 mobileNavToggle.focus();
                 
                 const toggleIcon = mobileNavToggle.querySelector('.iconify');
@@ -30,23 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     toggleIcon.setAttribute('data-icon', 'lucide:menu');
                 }
             }
-        });
-    }
-
-    const skipLink = document.querySelector('.skip-link');
-    if (skipLink) {
-        skipLink.addEventListener('click', () => {
-            setTimeout(() => {
-                skipLink.blur();
-            }, 100);
-        });
-    }
-
-    // Auto-submit en filtro de tipo de transacción
-    const filtro = document.getElementById('filtro-tipo');
-    if (filtro && filtro.form) {
-        filtro.addEventListener('change', () => {
-            filtro.form.submit();
         });
     }
 
@@ -81,6 +66,7 @@ function setupSingleToast(toast) {
         toast.classList.add('toast-fadeOut');
         setTimeout(() => {
             const container = toast.parentElement;
+            if (toast.contains(document.activeElement)) document.getElementById('main-content')?.focus();
             toast.remove();
             if (container && container.children.length === 0) {
                 container.remove();
@@ -92,15 +78,14 @@ function setupSingleToast(toast) {
         closeBtn.addEventListener('click', dismissToast);
     }
 
-    setTimeout(() => {
-        dismissToast();
-    }, 4500);
+
 }
 
 /**
  * Global Helper to trigger Toast Notifications
  */
 window.showToast = function(message, type = 'info', title = null, position = 'top-right') {
+    type = ['success', 'danger', 'warning', 'info'].includes(type) ? type : 'info';
     const validPositions = ['top-right', 'top-left', 'top-center', 'bottom-right', 'bottom-left', 'bottom-center'];
     const posClass = validPositions.includes(position) ? 'toast-' + position : 'toast-top-right';
 
@@ -139,12 +124,14 @@ window.showToast = function(message, type = 'info', title = null, position = 'to
             <span class="iconify alert-icon" data-icon="${iconName}" aria-hidden="true"></span>
         </div>
         <div class="alert-body">
-            <strong class="alert-title">${toastTitle}</strong>
-            <p class="alert-message">${message}</p>
+            <strong class="alert-title"></strong>
+            <p class="alert-message"></p>
         </div>
         <button type="button" class="alert-close-btn" aria-label="Cerrar notificación">&times;</button>
     `;
 
+    alertArticle.querySelector('.alert-title').textContent = toastTitle;
+    alertArticle.querySelector('.alert-message').textContent = message;
     container.appendChild(alertArticle);
     setupSingleToast(alertArticle);
 

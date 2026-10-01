@@ -1,4 +1,5 @@
-<form method="POST" action="<?php echo htmlspecialchars($formAction); ?>" class="form-horizontal js-validate-category-form" id="category-form">
+<form method="POST" action="<?php echo htmlspecialchars($formAction); ?>
+<?= csrf_field() ?>" class="form-horizontal js-validate-category-form" id="category-form">
     <style>
         /* Specific styles for responsive icon grid */
         .icon-grid {
@@ -97,7 +98,7 @@
 
     <div class="form-row-responsive">
         <div class="form-group">
-            <label>Icono</label>
+            <span id="icon-label">Icono</span>
             <input type="hidden" id="icono" name="icono" value="<?php echo htmlspecialchars((string) ($values['icono'] ?? 'mdi:folder')); ?>">
             
             <?php
@@ -109,11 +110,11 @@
             ];
             $selectedIcon = (string) ($values['icono'] ?? 'mdi:folder');
             ?>
-            <div class="icon-grid" id="icon-picker-grid">
+            <div class="icon-grid" id="icon-picker-grid" role="group" aria-labelledby="icon-label">
                 <?php foreach ($hardcodedIcons as $ico): ?>
-                    <div class="icon-option <?php echo $ico === $selectedIcon ? 'selected' : ''; ?>" data-icon-name="<?php echo $ico; ?>">
+                    <button type="button" aria-label="<?= e($ico) ?>" aria-pressed="<?= $ico === $selectedIcon ? 'true' : 'false' ?>" class="icon-option <?php echo $ico === $selectedIcon ? 'selected' : ''; ?>" data-icon-name="<?php echo $ico; ?>">
                         <span class="iconify" data-icon="<?php echo $ico; ?>"></span>
-                    </div>
+                    </button>
                 <?php endforeach; ?>
             </div>
             <small class="text-muted" style="display: block; margin-top: 5px;">Selecciona el ícono que mejor represente la categoría.</small>

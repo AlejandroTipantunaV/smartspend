@@ -127,15 +127,16 @@ class TransactionController
             $errors[] = 'Seleccione una categoría.';
         }
 
-        if ($montoRaw === '' || !is_numeric($montoRaw) || (float) $montoRaw <= 0) {
+        if ($montoRaw === '' || !preg_match('/^\d{1,8}(\.\d{1,2})?$/', $montoRaw) || (float) $montoRaw <= 0 || (float) $montoRaw > 99999999.99) {
             $errors[] = 'El monto debe ser un número mayor a 0.';
         }
 
-        if ($concepto === '' || mb_strlen($concepto) < 3) {
+        if ($concepto === '' || mb_strlen($concepto) < 3 || mb_strlen($concepto) > 255) {
             $errors[] = 'El concepto debe tener al menos 3 caracteres.';
         }
 
-        if ($fecha === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha)) {
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $fecha);
+        if (!$date || $date->format('Y-m-d') !== $fecha || $fecha < '1000-01-01') {
             $errors[] = 'Ingrese una fecha válida.';
         }
 
@@ -165,6 +166,15 @@ class TransactionController
 }
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
+require_login();
+
+$allowedActions = ['store', 'update', 'delete'];
+if (!in_array($action, $allowedActions, true)) {
+    header('Location: ../views/transactions.php');
+    exit;
+}
+
+verify_csrf();
 $controller = new TransactionController();
 
 switch ($action) {
@@ -177,7 +187,4 @@ switch ($action) {
     case 'delete':
         $controller->delete();
         break;
-    default:
-        header('Location: ../views/transactions.php');
-        exit;
 }

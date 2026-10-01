@@ -63,3 +63,5 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
+
+:root { --bg-light: var(--bg-page); --card-bg: var(--bg-card); --text-dark: var(--text-main); --radius: .75rem; --shadow: var(--shadow-sm); }

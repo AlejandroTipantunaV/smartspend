@@ -51,6 +51,10 @@ class CategoryController
             );
         }
 
+        $current = $this->categories->getById($id);
+        if ($current['tipo'] !== $result['data']['tipo'] && $this->categories->isUsed($id)) {
+            $this->flashAndRedirect('danger', 'No se puede cambiar el tipo de una categoría con transacciones.');
+        }
         $ok = $this->categories->update($id, $result['data']);
         $this->flashAndRedirect(
             $ok ? 'success' : 'danger',
@@ -110,7 +114,7 @@ class CategoryController
         $color = trim((string) ($input['color'] ?? ''));
         $status = isset($input['estado']) ? (int) $input['estado'] : 1;
 
-        if ($name === '' || mb_strlen($name) < 3) {
+        if ($name === '' || mb_strlen($name) < 3 || mb_strlen($name) > 50) {
             $errors[] = 'El nombre de la categoría debe tener al menos 3 caracteres.';
         }
 
@@ -118,6 +122,7 @@ class CategoryController
             $errors[] = 'Seleccione un tipo válido (Ingreso o Gasto).';
         }
 
+        if (mb_strlen($description)>255 || strlen($icon)>100 || !preg_match('/^#[0-9a-fA-F]{6}$/', $color) || !in_array($status,[0,1],true)) { $errors[] = 'Descripción, icono, color o estado no válido.'; }
         return [
             'ok' => empty($errors),
             'errors' => $errors,
@@ -141,6 +146,8 @@ class CategoryController
 }
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
+require_login();
+verify_csrf();
 $controller = new CategoryController();
 
 switch ($action) {

@@ -117,6 +117,10 @@ class Category
         ]);
     }
 
+    public function isUsed(int $id): bool {
+        $q = $this->db->prepare('SELECT 1 FROM transacciones WHERE id_categoria = ? LIMIT 1');
+        $q->execute([$id]); return (bool)$q->fetchColumn();
+    }
     public function delete(int $id): bool
     {
         $sql = 'DELETE FROM categorias WHERE id_categoria = :id';

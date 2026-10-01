@@ -26,8 +26,9 @@ $categoriasJson = e(json_encode($categorias, JSON_UNESCAPED_UNICODE));
       class="form-grid"
       method="POST"
       action="<?php echo e($formAction); ?>"
-      novalidate
       data-validate="transaction">
+
+    <?= csrf_field() ?>
 
     <?php if ($idTransaccion !== null): ?>
         <input type="hidden" name="id_transaccion" value="<?php echo (int) $idTransaccion; ?>">
@@ -39,7 +40,7 @@ $categoriasJson = e(json_encode($categorias, JSON_UNESCAPED_UNICODE));
                id="monto"
                name="monto"
                step="0.01"
-               min="0.01"
+               min="0.01" max="99999999.99"
                required
                aria-required="true"
                placeholder="0.00"
@@ -66,7 +67,10 @@ $categoriasJson = e(json_encode($categorias, JSON_UNESCAPED_UNICODE));
                 aria-required="true"
                 data-selected="<?php echo e((string) $values['id_categoria']); ?>"
                 data-categorias='<?php echo $categoriasJson; ?>'>
-            <option value="">Seleccione un tipo primero...</option>
+            <option value="">Seleccione una categoría...</option>
+            <?php foreach ($categorias as $cat): if (!(int)$cat['estado']) continue; ?>
+            <option value="<?= (int)$cat['id_categoria'] ?>" <?= (string)$values['id_categoria'] === (string)$cat['id_categoria'] ? 'selected' : '' ?>><?= e($cat['nombre_categoria'].' ('.$cat['tipo'].')') ?></option>
+            <?php endforeach; ?>
         </select>
         <span class="field-error" id="error-id_categoria" role="alert"></span>
     </div>

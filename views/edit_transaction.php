@@ -22,7 +22,7 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <section class="page-header">
-    <h2>Editar transacción</h2>
+    <h1>Editar transacción</h1>
     <p class="text-muted"><a href="transactions.php">← Volver al historial</a></p>
 </section>
 

@@ -14,7 +14,7 @@ include __DIR__ . '/../../includes/header.php';
 ?>
 
 <section class="page-header">
-    <h2>Nueva Categoría</h2>
+    <h1>Nueva Categoría</h1>
     <p class="text-muted">Crea una nueva categoría para organizar tus finanzas.</p>
 </section>
 
@@ -33,6 +33,6 @@ include __DIR__ . '/../../includes/header.php';
 </section>
 
 <?php
-$extraScripts = ['https://code.iconify.design/3/3.1.0/iconify.min.js', '../../assets/js/categories.js'];
+$extraScripts = ['assets/js/categories.js'];
 include __DIR__ . '/../../includes/footer.php';
 ?>

@@ -1,20 +1,10 @@
 <?php
 /** Global layout header. Detects $basePath, loads CSS modules with cache-busting, renders nav and opens <main>. */
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Detect the correct relative base path to the project root based on
-// the physical location of the calling view file (root / views/ / views/auth/).
-$basePath = '';
-if (file_exists('assets/css/styles.css')) {
-    $basePath = '';          // Called from project root (index.php)
-} elseif (file_exists('../assets/css/styles.css')) {
-    $basePath = '../';       // Called from views/
-} elseif (file_exists('../../assets/css/styles.css')) {
-    $basePath = '../../';    // Called from views/auth/
-}
-
+require_once __DIR__ . '/session.php';
+$scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_FILENAME'] ?? __DIR__ . '/../index.php'));
+$rootDir = str_replace('\\', '/', dirname(__DIR__));
+$relative = trim(substr($scriptDir, strlen($rootDir)), '/');
+$basePath = $relative === '' ? '' : str_repeat('../', count(explode('/', $relative)));
 $pageTitle = $pageTitle ?? 'SmartSpend - Control y Gestión de Gastos Personales';
 ?>
 <!DOCTYPE html>

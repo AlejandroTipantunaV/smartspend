@@ -6,9 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
         iconOptions.forEach(option => {
             option.addEventListener('click', () => {
                 // Remove selected class from all
-                iconOptions.forEach(opt => opt.classList.remove('selected'));
+                iconOptions.forEach(opt => { opt.classList.remove('selected'); opt.setAttribute('aria-pressed', 'false'); });
                 // Add to clicked
                 option.classList.add('selected');
+                option.setAttribute('aria-pressed', 'true');
                 // Set hidden input value
                 iconInput.value = option.getAttribute('data-icon-name');
             });
@@ -50,6 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (hasError) {
                 e.preventDefault();
+                const field = !typeSelect.value ? typeSelect : nameInput;
+                field.setAttribute('aria-invalid', 'true');
+                field.setAttribute('aria-describedby', 'error-' + field.id);
+                field.focus();
             }
         });
     }
