@@ -25,9 +25,10 @@ $categoriasJson = e(json_encode($categorias, JSON_UNESCAPED_UNICODE));
 <form id="form-transaccion"
       class="form-grid"
       method="POST"
-      action="<?php echo e($formAction); ?>
-<?= csrf_field() ?>"
+      action="<?php echo e($formAction); ?>"
       data-validate="transaction">
+
+    <?= csrf_field() ?>
 
     <?php if ($idTransaccion !== null): ?>
         <input type="hidden" name="id_transaccion" value="<?php echo (int) $idTransaccion; ?>">
