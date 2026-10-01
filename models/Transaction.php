@@ -190,11 +190,12 @@ class Transaction
         $sql = "SELECT 
                     c.nombre_categoria,
                     c.icono,
+                    c.color,
                     SUM(t.monto) as total_amount
                 FROM transacciones t
                 JOIN categorias c ON t.id_categoria = c.id_categoria
                 WHERE t.id_usuario = :id_usuario AND t.tipo = :tipo
-                GROUP BY t.id_categoria, c.nombre_categoria, c.icono
+                GROUP BY t.id_categoria, c.nombre_categoria, c.icono, c.color
                 ORDER BY total_amount DESC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['id_usuario' => $idUsuario, 'tipo' => $tipo]);
@@ -209,6 +210,7 @@ class Transaction
             $distribution[] = [
                 'category_name' => $row['nombre_categoria'],
                 'icon' => $row['icono'] ?? 'lucide:tag',
+                'color' => $row['color'] ?? null,
                 'amount' => $amount,
                 'percentage' => round($percentage, 2)
             ];
@@ -239,11 +241,12 @@ class Transaction
         $sql = "SELECT 
                     DATE(t.fecha_transaccion) as fecha,
                     c.nombre_categoria,
+                    c.color,
                     SUM(t.monto) as total_amount
                 FROM transacciones t
                 JOIN categorias c ON t.id_categoria = c.id_categoria
                 WHERE t.id_usuario = :id_usuario AND t.tipo = :tipo
-                GROUP BY DATE(t.fecha_transaccion), t.id_categoria, c.nombre_categoria
+                GROUP BY DATE(t.fecha_transaccion), t.id_categoria, c.nombre_categoria, c.color
                 ORDER BY fecha ASC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['id_usuario' => $idUsuario, 'tipo' => $tipo]);
@@ -252,6 +255,7 @@ class Transaction
         
         // Formatear para Highcharts: agrupar por categoría
         $series = [];
+        $catColors = [];
         $dates = [];
         
         foreach ($results as $row) {
@@ -261,6 +265,7 @@ class Transaction
             
             if (!isset($series[$catName])) {
                 $series[$catName] = [];
+                $catColors[$catName] = $row['color'] ?? null;
             }
             $series[$catName][$date] = $amount;
             $dates[$date] = true;
@@ -278,6 +283,7 @@ class Transaction
             }
             $finalSeries[] = [
                 'name' => $catName,
+                'color' => $catColors[$catName],
                 'data' => $data
             ];
         }

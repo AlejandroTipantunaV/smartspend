@@ -59,9 +59,12 @@ $navItems = array_filter($allItems, function($item) use ($isLoggedIn) {
             ?>
             <li>
                 <?php if ($item['id'] === 'logout'): ?>
-                <form method="post" action="<?= e($basePath) ?>controllers/AuthController.php">
+                <form method="post" action="<?= e($basePath) ?>controllers/AuthController.php" style="margin: 0; width: 100%;">
                     <?= csrf_field() ?><input type="hidden" name="action" value="logout">
-                    <button class="nav-link" type="submit">Cerrar sesión</button>
+                    <button class="nav-link" type="submit" style="background: transparent; border: none; font-family: inherit; font-size: inherit; cursor: pointer; text-align: left; width: 100%;">
+                        <span class="iconify nav-icon" data-icon="<?php echo htmlspecialchars($item['icon']); ?>" aria-hidden="true"></span>
+                        <span><?php echo htmlspecialchars($item['label']); ?></span>
+                    </button>
                 </form>
                 <?php else: ?>
                 <a href="<?php echo htmlspecialchars($targetUrl); ?>" 

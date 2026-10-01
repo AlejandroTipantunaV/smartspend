@@ -236,7 +236,7 @@ function renderTrendChart(trendData, titleType) {
             verticalAlign: 'middle'
         },
         series: trendData.series.map((s, index) => {
-            s.color = colors[index % colors.length];
+            s.color = s.color || colors[index % colors.length];
             return s;
         }),
         credits: { enabled: false }
@@ -247,7 +247,7 @@ function renderChart(data, total) {
     const chartData = data.map((item, index) => ({
         name: item.category_name,
         y: item.amount,
-        color: colors[index % colors.length]
+        color: item.color || colors[index % colors.length]
     }));
 
     if (chartInstance) {
@@ -313,7 +313,7 @@ function renderList(data) {
     }
 
     data.forEach((item, index) => {
-        const color = colors[index % colors.length];
+        const color = item.color || colors[index % colors.length];
         
         const itemHtml = `
             <div class="category-item">
