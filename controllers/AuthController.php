@@ -1,11 +1,12 @@
 <?php
-<<<<<<< HEAD
-// controllers/AuthController.php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/../models/User.php';
 
 class AuthController {
-    
+
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $correo = trim($_POST['correo'] ?? '');
@@ -14,9 +15,9 @@ class AuthController {
             $user = User::getByEmail($correo);
 
             if ($user && password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['id_usuario']; 
+                $_SESSION['user_id'] = $user['id_usuario'];
                 $_SESSION['user_name'] = $user['nombre'];
-                
+
                 header("Location: ../views/dashboard.php");
                 exit;
             } else {
@@ -49,7 +50,7 @@ class AuthController {
             }
 
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            
+
             if (User::create($nombre, $correo, $hashed_password)) {
                 header("Location: ../views/auth/login.php?success=Registro exitoso. Ya puedes iniciar sesión.");
                 exit;
@@ -132,10 +133,9 @@ class AuthController {
             }
         }
     }
-
-    
 }
 
+// Router básico según el parámetro 'action'
 if (isset($_GET['action'])) {
     $auth = new AuthController();
     switch ($_GET['action']) {
@@ -155,54 +155,5 @@ if (isset($_GET['action'])) {
             $auth->deleteProfile();
             break;
     }
-    
-    
 }
 ?>
-=======
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-$action = $_REQUEST['action'] ?? '';
-
-if ($action === 'login') {
-    $_SESSION['user_id'] = 1;
-    $_SESSION['id_usuario'] = 1;
-    $_SESSION['user_name'] = 'Jonathan';
-    $_SESSION['nombre'] = 'Jonathan';
-    $_SESSION['flash_message'] = [
-        'message' => '¡Bienvenido de nuevo a SmartSpend!',
-        'type' => 'success'
-    ];
-    header("Location: ../views/dashboard.php");
-    exit;
-}
-
-if ($action === 'register') {
-    $_SESSION['user_id'] = 1;
-    $_SESSION['id_usuario'] = 1;
-    $_SESSION['user_name'] = 'Nuevo Usuario';
-    $_SESSION['nombre'] = 'Nuevo Usuario';
-    $_SESSION['flash_message'] = [
-        'message' => '¡Cuenta creada exitosamente! Bienvenido a SmartSpend.',
-        'type' => 'success'
-    ];
-    header("Location: ../views/dashboard.php");
-    exit;
-}
-
-if ($action === 'logout') {
-    session_destroy();
-    session_start();
-    $_SESSION['flash_message'] = [
-        'message' => 'Has cerrado sesión exitosamente.',
-        'type' => 'info'
-    ];
-    header("Location: ../index.php");
-    exit;
-}
-
-header("Location: ../index.php");
-exit;
->>>>>>> c749ca896438d59128bb5756d8d02b60d84adb63

@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 <!-- views/auth/login.php -->
-<?php 
+<?php
 session_start();
 if (isset($_SESSION['user_id'])) {
     header("Location: ../dashboard.php");
@@ -41,7 +40,7 @@ require_once __DIR__ . '/../../includes/header.php';
             <button type="submit" class="btn-primary">
                 Entrar
             </button>
-        </form>
+</form>
 
         <p class="text-center auth-footer-text">
             ¿No tienes cuenta? <a href="register.php" class="auth-link">Regístrate aquí</a>
@@ -50,18 +49,3 @@ require_once __DIR__ . '/../../includes/header.php';
 </main>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>
-=======
-<?php
-$pageTitle = "Iniciar Sesión - SmartSpend";
-include __DIR__ . '/../../includes/header.php';
-?>
-
-<h1>Página de Iniciar Sesión</h1>
-
-<form action="../../controllers/AuthController.php" method="POST" style="margin-top: 1.5rem;">
-    <input type="hidden" name="action" value="login">
-    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-</form>
-
-<?php include __DIR__ . '/../../includes/footer.php'; ?>
->>>>>>> c749ca896438d59128bb5756d8d02b60d84adb63
