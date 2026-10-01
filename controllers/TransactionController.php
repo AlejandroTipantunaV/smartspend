@@ -167,6 +167,13 @@ class TransactionController
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 require_login();
+
+$allowedActions = ['store', 'update', 'delete'];
+if (!in_array($action, $allowedActions, true)) {
+    header('Location: ../views/transactions.php');
+    exit;
+}
+
 verify_csrf();
 $controller = new TransactionController();
 
@@ -180,7 +187,4 @@ switch ($action) {
     case 'delete':
         $controller->delete();
         break;
-    default:
-        header('Location: ../views/transactions.php');
-        exit;
 }

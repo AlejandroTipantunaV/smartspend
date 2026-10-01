@@ -91,23 +91,21 @@ include __DIR__ . '/../includes/header.php';
                             <td data-label="Monto" class="text-right amount-<?php echo e($t['tipo']); ?>">
                                 <?php echo e(format_amount((float) $t['monto'], $t['tipo'])); ?>
                             </td>
-                            <td data-label="Acciones" class="text-right">
-                                <div style="display: flex; gap: 0.5rem; justify-content: flex-end; align-items: center;">
-                                    <a class="btn btn-sm btn-outline"
-                                       href="edit_transaction.php?id=<?php echo (int) $t['id_transaccion']; ?>">
-                                        Editar
-                                    </a>
-                                    <form method="POST"
-                                          action="<?php echo e($basePath); ?>
-<?= csrf_field() ?>controllers/TransactionController.php?action=delete"
-                                          class="inline-form js-confirm-delete"
-                                          data-confirm="¿Eliminar esta transacción? Esta acción no se puede deshacer.">
-                                        <input type="hidden"
-                                               name="id_transaccion"
-                                               value="<?php echo (int) $t['id_transaccion']; ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger" style="margin: 0;">Eliminar</button>
-                                    </form>
-                                </div>
+                            <td data-label="Acciones" class="actions-cell">
+                                <a class="btn btn-sm btn-outline"
+                                   href="edit_transaction.php?id=<?php echo (int) $t['id_transaccion']; ?>">
+                                    Editar
+                                </a>
+                                <form method="POST"
+                                      action="<?php echo e($basePath); ?>controllers/TransactionController.php?action=delete"
+                                      class="inline-form js-confirm-delete"
+                                      data-confirm="¿Eliminar esta transacción? Esta acción no se puede deshacer.">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden"
+                                           name="id_transaccion"
+                                           value="<?php echo (int) $t['id_transaccion']; ?>">
+                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
