@@ -1,0 +1,5 @@
+Options -Indexes
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+RedirectMatch 403 "(^|/)(tmp|sql|models|config|includes)/"

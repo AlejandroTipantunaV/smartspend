@@ -2,8 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../controllers/DashboardController.php';
-// El acceso directo solo muestra el estado pendiente; no acepta identidad HTTP.
-$dashboard = $dashboard ?? (new DashboardController())->data();
+require_once __DIR__ . '/../includes/session.php';
+$idUsuario = require_login('auth/login.php');
+$dashboard = (new DashboardController())->data($idUsuario);
 $escape = static function ($value): string {
     return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 };
@@ -13,35 +14,13 @@ $amount = static function ($value): string {
 $ready = $dashboard['status'] === 'ready';
 $maximum = max(abs((float) $dashboard['income']), abs((float) $dashboard['expenses']), 1);
 
-// Los includes actuales usan rutas relativas a index.php. Adaptarlas solo en
-// este render permite abrir /views/dashboard.php sin cambiar archivos ajenos.
-$script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/index.php');
-$base = rtrim(dirname($script), '/.');
-if (substr($script, -20) === '/views/dashboard.php') {
-    $base = rtrim(dirname(dirname($script)), '/.');
-}
-ob_start();
+$pageTitle = 'Dashboard - SmartSpend';
 require __DIR__ . '/../includes/header.php';
-$header = (string) ob_get_clean();
-$header = str_replace(
-    ['href="assets/css/styles.css"', 'href="index.php"', 'href="views/auth/login.php"', '<body>'],
-    ['href="' . $escape($base . '/assets/css/styles.css') . '"',
-     'href="' . $escape($base . '/index.php') . '"',
-     'href="' . $escape($base . '/views/auth/login.php') . '"',
-     '<body><a class="skip-link" href="#dashboard-content">Saltar al contenido</a>'],
-    $header
-);
-// No ofrecer un enlace roto mientras el módulo de autenticación no exista.
-if (!is_file(__DIR__ . '/auth/login.php')) {
-    $header = str_replace('<a href="' . $escape($base . '/views/auth/login.php') . '">Iniciar Sesión</a>',
-        '<span class="nav-unavailable">Acceso próximamente</span>', $header);
-}
-echo $header;
 ?>
 <section class="dashboard" id="dashboard-content" tabindex="-1" aria-labelledby="dashboard-title">
     <div class="dashboard-heading">
         <div><p class="dashboard-eyebrow">TU RESUMEN FINANCIERO</p>
-        <h2 id="dashboard-title">Tu dinero, en perspectiva</h2>
+        <h1 id="dashboard-title">Tu dinero, en perspectiva</h1>
         <p>Ingresos, gastos y movimientos de todo tu historial.</p></div>
         <span class="dashboard-period">Todos los períodos</span>
     </div>
@@ -57,12 +36,12 @@ echo $header;
         <?php foreach ([['income', 'Ingresos totales', 'Entradas registradas'], ['expenses', 'Gastos totales', 'Salidas registradas'], ['balance', 'Balance disponible', 'Ingresos menos gastos']] as [$key, $label, $description]): ?>
             <article class="dashboard-card dashboard-metric dashboard-metric--<?= $key ?>">
                 <h3><?= $label ?></h3>
-                <p class="dashboard-value<?= !$ready ? ' dashboard-value--missing' : '' ?>"><?= $escape($amount($dashboard[$key])) ?></p>
+                <p class="dashboard-value<?= !$ready ? ' dashboard-value--missing' : '' ?><?= $key === 'balance' && $ready ? ((float)$dashboard['balance'] < 0 ? ' balance-negative' : ' balance-positive') : '' ?>"><?= $escape($amount($dashboard[$key])) ?></p>
                 <p class="dashboard-muted"><?= $description ?></p>
             </article>
         <?php endforeach; ?>
     </div>
-    <p class="dashboard-unit">Importes en la unidad monetaria de tus registros. El proyecto aún no define una moneda.</p>
+    <p class="dashboard-unit">Importes en dólares estadounidenses (USD).</p>
 
     <div class="dashboard-panels">
         <section class="dashboard-card" aria-labelledby="recent-title">

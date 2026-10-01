@@ -1,27 +1,12 @@
 <?php
-require_once 'config/database.php';
-
-try {
-    $db = Database::getInstance();
-    $stmt = $db->query("SELECT * FROM categorias");
-    $categorias = $stmt->fetchAll();
-    $db_status = "Conexión a la Base de Datos exitosa.";
-} catch (Exception $e) {
-    $db_status = "Error: " . $e->getMessage();
-}
-
-include 'includes/header.php';
+require_once __DIR__ . '/includes/session.php';
+if (!empty($_SESSION['id_usuario'])) { header('Location: views/dashboard.php'); exit; }
+$pageTitle='SmartSpend - Finanzas personales';
+include __DIR__ . '/includes/header.php';
 ?>
-
 <section class="welcome-section">
-    <h2>Bienvenido a SmartSpend</h2>
-    <p>Plataforma para el control y la gestión de gastos personales.</p>
-    
-    <div class="status-card">
-        <h3>Estado del Sistema</h3>
-        <p><strong>Base de Datos:</strong> <?php echo htmlspecialchars($db_status); ?></p>
-        <p><strong>Categorías Registradas:</strong> <?php echo count($categorias); ?></p>
-    </div>
+<h1>Tu dinero, bajo control</h1>
+<p>Registra tus ingresos y gastos, organiza tus movimientos y consulta tu balance en un solo lugar.</p>
+<div class="form-actions"><a class="btn btn-primary" href="views/auth/register.php">Crear cuenta</a><a class="btn btn-outline" href="views/auth/login.php">Iniciar sesión</a></div>
 </section>
-
-<?php include 'includes/footer.php'; ?>
+<?php include __DIR__ . '/includes/footer.php'; ?>
