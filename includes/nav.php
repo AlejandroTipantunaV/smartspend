@@ -1,5 +1,21 @@
 <?php
-$currentPage = basename($_SERVER['PHP_SELF']);
+$isLoggedIn = !empty($_SESSION['user_id']) || !empty($_SESSION['id_usuario']);
+
+// Determine active menu ID
+$currentId = '';
+if ($basePath === '') {
+    $currentId = 'home';
+} elseif (strpos($_SERVER['PHP_SELF'], '/auth/') !== false) {
+    if (strpos($_SERVER['PHP_SELF'], 'login.php') !== false) $currentId = 'login';
+    if (strpos($_SERVER['PHP_SELF'], 'register.php') !== false) $currentId = 'register';
+} elseif (strpos($_SERVER['PHP_SELF'], '/category/') !== false) {
+    $currentId = 'categories';
+} else {
+    $page = basename($_SERVER['PHP_SELF']);
+    if ($page === 'dashboard.php') $currentId = 'dashboard';
+    if ($page === 'transactions.php') $currentId = 'transactions';
+    if ($page === 'profile.php') $currentId = 'profile';
+}
 $isLoggedIn = !empty($_SESSION['user_id']) || !empty($_SESSION['id_usuario']);
 
 $jsonPath = __DIR__ . '/../config/navigation.json';
@@ -39,8 +55,7 @@ $navItems = array_filter($allItems, function($item) use ($isLoggedIn) {
             } else {
                 $targetUrl = $basePath . $rawUrl;
             }
-            $itemPageName = basename($rawUrl);
-            $isActive = ($currentPage === $itemPageName);
+            $isActive = ($item['id'] === $currentId);
             ?>
             <li>
                 <a href="<?php echo htmlspecialchars($targetUrl); ?>" 

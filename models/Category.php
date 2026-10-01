@@ -1,6 +1,6 @@
 <?php
 /**
- * Modelo Category — consultas a la tabla categorias.
+ * Category model — database queries for categories table.
  */
 require_once __DIR__ . '/../config/database.php';
 
@@ -18,7 +18,7 @@ class Category
      */
     public function getAll(): array
     {
-        $sql = 'SELECT id_categoria, nombre_categoria, tipo
+        $sql = 'SELECT id_categoria, nombre_categoria, tipo, descripcion, icono, color, estado, fecha
                 FROM categorias
                 ORDER BY tipo ASC, nombre_categoria ASC';
 
@@ -28,36 +28,99 @@ class Category
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function getByTipo(string $tipo): array
+    public function getByType(string $type): array
     {
-        $sql = 'SELECT id_categoria, nombre_categoria, tipo
+        $sql = 'SELECT id_categoria, nombre_categoria, tipo, descripcion, icono, color, estado, fecha
                 FROM categorias
-                WHERE tipo = :tipo
+                WHERE tipo = :tipo AND estado = 1
                 ORDER BY nombre_categoria ASC';
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute(['tipo' => $tipo]);
+        $stmt->execute(['tipo' => $type]);
 
         return $stmt->fetchAll();
     }
 
     /**
-     * Comprueba si una categoría existe y coincide con el tipo.
+     * Check if a category exists and matches the given type.
      */
-    public function belongsToTipo(int $idCategoria, string $tipo): bool
+    public function belongsToType(int $categoryId, string $type): bool
     {
         $sql = 'SELECT 1
                 FROM categorias
                 WHERE id_categoria = :id_categoria
                   AND tipo = :tipo
+                  AND estado = 1
                 LIMIT 1';
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
-            'id_categoria' => $idCategoria,
-            'tipo' => $tipo,
+            'id_categoria' => $categoryId,
+            'tipo' => $type,
         ]);
 
         return (bool) $stmt->fetchColumn();
+    }
+
+    /**
+     * Get a category by its ID.
+     */
+    public function getById(int $id): ?array
+    {
+        $sql = 'SELECT id_categoria, nombre_categoria, tipo, descripcion, icono, color, estado, fecha
+                FROM categorias
+                WHERE id_categoria = :id';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch();
+
+        return $row ?: null;
+    }
+
+    public function create(array $data): bool
+    {
+        $sql = 'INSERT INTO categorias (nombre_categoria, tipo, descripcion, icono, color, estado)
+                VALUES (:nombre_categoria, :tipo, :descripcion, :icono, :color, :estado)';
+
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            'nombre_categoria' => $data['nombre_categoria'],
+            'tipo'             => $data['tipo'],
+            'descripcion'      => $data['descripcion'] ?? null,
+            'icono'            => $data['icono'] ?? null,
+            'color'            => $data['color'] ?? null,
+            'estado'           => $data['estado'] ?? 1,
+        ]);
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        $sql = 'UPDATE categorias
+                SET nombre_categoria = :nombre_categoria,
+                    tipo = :tipo,
+                    descripcion = :descripcion,
+                    icono = :icono,
+                    color = :color,
+                    estado = :estado
+                WHERE id_categoria = :id';
+
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            'nombre_categoria' => $data['nombre_categoria'],
+            'tipo'             => $data['tipo'],
+            'descripcion'      => $data['descripcion'] ?? null,
+            'icono'            => $data['icono'] ?? null,
+            'color'            => $data['color'] ?? null,
+            'estado'           => $data['estado'] ?? 1,
+            'id'               => $id,
+        ]);
+    }
+
+    public function delete(int $id): bool
+    {
+        $sql = 'DELETE FROM categorias WHERE id_categoria = :id';
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute(['id' => $id]);
     }
 }

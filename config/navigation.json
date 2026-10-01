@@ -36,6 +36,13 @@
             "auth": "user"
         },
         {
+            "id": "categories",
+            "label": "Categorías",
+            "url": "views/category/index.php",
+            "icon": "lucide:tags",
+            "auth": "user"
+        },
+        {
             "id": "profile",
             "label": "Perfil",
             "url": "views/profile.php",

@@ -213,9 +213,16 @@
     .data-table td {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: 1rem;
         border-bottom: 0;
         padding: 0.45rem 0.85rem;
+    }
+
+    .data-table td > :last-child {
+        min-width: 0;
+        word-wrap: break-word;
+        text-align: right;
     }
 
     .data-table td::before {
