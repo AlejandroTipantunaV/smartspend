@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ============================================================
    SmartSpend - Estilos Globales, Layout y Accesibilidad (WCAG 2.2)
    ============================================================ */
@@ -324,3 +325,11 @@ textarea:focus-visible {
         justify-content: center;
     }
 }
+=======
+@import "variables.css";
+@import "accessibility.css";
+@import "layout.css";
+@import "alerts.css";
+@import "cards.css";
+@import "forms.css";
+>>>>>>> c749ca896438d59128bb5756d8d02b60d84adb63

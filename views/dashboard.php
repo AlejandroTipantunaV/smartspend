@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: auth/login.php");
@@ -22,3 +23,19 @@ include_once __DIR__ . '/../includes/header.php';
 </main>
 
 <?php include_once __DIR__ . '/../includes/footer.php'; ?>
+=======
+require_once __DIR__ . '/../includes/session.php';
+$idUsuario = require_login('../views/auth/login.php');
+
+$basePath  = '../';
+$pageTitle = 'Dashboard Financiero - SmartSpend';
+include __DIR__ . '/../includes/header.php';
+?>
+
+<section class="page-header">
+    <h2>Dashboard</h2>
+    <p class="text-muted">Resumen de tus finanzas personales.</p>
+</section>
+
+<?php include __DIR__ . '/../includes/footer.php'; ?>
+>>>>>>> c749ca896438d59128bb5756d8d02b60d84adb63

@@ -1,0 +1,231 @@
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text-main);
+}
+
+.form-control,
+.form-select {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text-main);
+    background-color: var(--bg-card);
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-light);
+    outline: none;
+}
+
+/* Inputs dentro de .form-group del módulo de transacciones */
+.form-group input,
+.form-group select,
+.form-group textarea,
+.filter-bar select {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--bg-card);
+    color: var(--text-main);
+    font: inherit;
+}
+
+.form-group input.is-invalid,
+.form-group select.is-invalid {
+    border-color: var(--danger-color);
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.3rem;
+}
+
+.field-error {
+    min-height: 1.1em;
+    font-size: 0.875rem;
+    color: var(--danger-color);
+    margin-top: 0.2rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+/* Grid de 2 columnas para formularios de transacciones */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.25rem;
+}
+
+.form-grid--single {
+    grid-template-columns: 1fr;
+}
+
+.form-group--full {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.inline-form {
+    display: inline;
+}
+
+/* =========================================
+   Tabla de historial de transacciones
+   ========================================= */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    background-color: var(--bg-card);
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.data-table th {
+    background-color: var(--bg-page);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--primary-light);
+}
+
+.actions-cell {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.empty-state {
+    color: var(--text-muted);
+    padding: 1rem 0;
+}
+
+/* =========================================
+   Badges (tipo de transacción)
+   ========================================= */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 50px;
+    text-transform: uppercase;
+}
+
+.badge-income, .badge-success {
+    background-color: var(--secondary-light);
+    color: var(--secondary-color);
+}
+
+.badge-expense, .badge-danger {
+    background-color: var(--danger-light);
+    color: var(--danger-color);
+}
+
+/* Montos coloreados */
+.amount-ingreso {
+    color: var(--secondary-color);
+    font-weight: 700;
+}
+
+.amount-gasto {
+    color: var(--danger-color);
+    font-weight: 700;
+}
+
+/* Utilidades de texto */
+.text-right  { text-align: right; }
+.text-muted  { color: var(--text-muted); }
+.mt-1        { margin-top: 1rem; }
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Responsive tabla */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .data-table thead {
+        display: none;
+    }
+
+    .data-table tr {
+        display: block;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        margin-bottom: 0.75rem;
+        padding: 0.5rem 0;
+    }
+
+    .data-table td {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        border-bottom: 0;
+        padding: 0.45rem 0.85rem;
+    }
+
+    .data-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--text-muted);
+        flex-shrink: 0;
+    }
+
+    .actions-cell {
+        justify-content: flex-end;
+    }
+}
