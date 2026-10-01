@@ -39,6 +39,7 @@ $pageTitle = $pageTitle ?? 'SmartSpend - Control y Gestión de Gastos Personales
     <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/alerts.css?v=<?php echo $v; ?>">
     <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/cards.css?v=<?php echo $v; ?>">
     <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/forms.css?v=<?php echo $v; ?>">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/dashboard.css?v=<?php echo $v; ?>">
 </head>
 <body>
 
