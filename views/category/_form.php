@@ -1,5 +1,5 @@
-<form method="POST" action="<?php echo htmlspecialchars($formAction); ?>
-<?= csrf_field() ?>" class="form-horizontal js-validate-category-form" id="category-form">
+<form method="POST" action="<?php echo htmlspecialchars($formAction); ?>" class="form-horizontal js-validate-category-form" id="category-form">
+    <?= csrf_field() ?>
     <style>
         /* Specific styles for responsive icon grid */
         .icon-grid {
