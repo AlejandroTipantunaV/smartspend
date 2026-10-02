@@ -11,10 +11,12 @@ class CategoryController
     private const ALLOWED_TYPES = ['ingreso', 'gasto'];
 
     private Category $categories;
+    private int $userId;
 
     public function __construct(?Category $categories = null)
     {
         $this->categories = $categories ?? new Category();
+        $this->userId = (int)($_SESSION['user_id'] ?? $_SESSION['id_usuario'] ?? 0);
     }
 
     public function store(): void
@@ -27,7 +29,7 @@ class CategoryController
             $this->flashAndRedirect('danger', implode(' ', $result['errors']));
         }
 
-        $ok = $this->categories->create($result['data']);
+        $ok = $this->categories->create($result['data'], $this->userId);
         $this->flashAndRedirect(
             $ok ? 'success' : 'danger',
             $ok ? 'Categoría registrada correctamente.' : 'No se pudo registrar la categoría.'
@@ -51,11 +53,11 @@ class CategoryController
             );
         }
 
-        $current = $this->categories->getById($id);
-        if ($current['tipo'] !== $result['data']['tipo'] && $this->categories->isUsed($id)) {
+        $current = $this->categories->getById($id, $this->userId);
+        if ($current['tipo'] !== $result['data']['tipo'] && $this->categories->isUsed($id, $this->userId)) {
             $this->flashAndRedirect('danger', 'No se puede cambiar el tipo de una categoría con transacciones.');
         }
-        $ok = $this->categories->update($id, $result['data']);
+        $ok = $this->categories->update($id, $result['data'], $this->userId);
         $this->flashAndRedirect(
             $ok ? 'success' : 'danger',
             $ok ? 'Categoría actualizada correctamente.' : 'No se pudo actualizar la categoría.'
@@ -71,14 +73,31 @@ class CategoryController
         $this->findOrFail($id);
 
         try {
-            $ok = $this->categories->delete($id);
+            $ok = $this->categories->deactivate($id, $this->userId);
             $this->flashAndRedirect(
                 $ok ? 'success' : 'danger',
-                $ok ? 'Categoría eliminada correctamente.' : 'No se pudo eliminar la categoría.'
+                $ok ? 'Categoría desactivada correctamente.' : 'No se pudo desactivar la categoría.'
             );
         } catch (PDOException $e) {
-            // Prevent deletion if category is currently used in transactions (foreign key constraint)
-            $this->flashAndRedirect('danger', 'No se puede eliminar la categoría porque está siendo utilizada en transacciones.');
+            $this->flashAndRedirect('danger', 'Error al desactivar la categoría.');
+        }
+    }
+
+    public function activate(): void
+    {
+        $this->assertPost();
+
+        $id = (int) ($_POST['id_categoria'] ?? 0);
+        $this->findOrFail($id);
+
+        try {
+            $ok = $this->categories->activate($id, $this->userId);
+            $this->flashAndRedirect(
+                $ok ? 'success' : 'danger',
+                $ok ? 'Categoría activada correctamente.' : 'No se pudo activar la categoría.'
+            );
+        } catch (PDOException $e) {
+            $this->flashAndRedirect('danger', 'Error al activar la categoría.');
         }
     }
 
@@ -95,7 +114,7 @@ class CategoryController
             $this->flashAndRedirect('danger', 'Categoría no válida.');
         }
 
-        $row = $this->categories->getById($id);
+        $row = $this->categories->getById($id, $this->userId);
         if (!$row) {
             $this->flashAndRedirect('danger', 'No se encontró la categoría.');
         }
@@ -159,6 +178,9 @@ switch ($action) {
         break;
     case 'delete':
         $controller->delete();
+        break;
+    case 'activate':
+        $controller->activate();
         break;
     default:
         header('Location: ../views/category/index.php');

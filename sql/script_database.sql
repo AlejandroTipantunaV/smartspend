@@ -33,6 +33,7 @@ CREATE TABLE `usuarios` (
 -- ============================================================
 CREATE TABLE `categorias` (
   `id_categoria` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_usuario` INT NOT NULL,
   `nombre_categoria` VARCHAR(50) NOT NULL,
   `tipo` ENUM('ingreso', 'gasto') NOT NULL,
   `descripcion` VARCHAR(255) DEFAULT NULL,
@@ -69,28 +70,33 @@ ALTER TABLE `transacciones`
     FOREIGN KEY (`id_categoria`) REFERENCES `categorias`(`id_categoria`) 
     ON DELETE RESTRICT ON UPDATE CASCADE;
 
+ALTER TABLE `categorias`
+  ADD CONSTRAINT `fk_categorias_usuarios` 
+    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios`(`id_usuario`) 
+    ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 -- ============================================================
 -- 6. DATOS INICIALES Y PRUEBAS DE FUNCIONAMIENTO
 -- ============================================================
 
--- Categorías base de Gastos e Ingresos
-INSERT INTO `categorias` (`nombre_categoria`, `tipo`, `descripcion`, `icono`, `color`, `estado`) VALUES
-('Alimentación', 'gasto', 'Gastos en comida, supermercado y restaurantes', 'mdi:food', '#ff9999', 1),
-('Transporte', 'gasto', 'Pasajes, gasolina, taxis o transporte público', 'mdi:car', '#99ccff', 1),
-('Servicios Básicos', 'gasto', 'Agua, luz, internet, teléfono', 'mdi:bolt', '#ffff99', 1),
-('Entretenimiento', 'gasto', 'Cine, salidas, conciertos y hobbies', 'mdi:movie', '#cc99ff', 1),
-('Salud y Bienestar', 'gasto', 'Medicinas, consultas médicas y gimnasio', 'mdi:heart-pulse', '#ff99cc', 1),
-('Educación', 'gasto', 'Cursos, libros, matrícula o universidad', 'mdi:school', '#99ff99', 1),
-('Salario', 'ingreso', 'Sueldo o nómina mensual', 'mdi:cash', '#66cc66', 1),
-('Ventas / Negocios', 'ingreso', 'Ingresos por ventas de productos o servicios', 'mdi:store', '#ffcc66', 1),
-('Inversiones', 'ingreso', 'Retornos o dividendos de inversiones', 'mdi:chart-line', '#6699ff', 1),
-('Otros Ingresos', 'ingreso', 'Regalos o ingresos extra ocasionales', 'mdi:gift', '#cccccc', 1);
-
 -- Usuario de prueba inicial
 -- Nota: La contraseña en texto plano es 'password123', encriptada con bcrypt (password_hash)
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `correo`, `password`) VALUES
 (1, 'Gabriel Tipantuña', 'gabriel@ejemplo.com', '$2y$10$9uhYjscXM3gNVpldtaOJY.oavvvy6sQ.gRg/KRzpkQPsrA/t5m6Re');
+
+-- Categorías base de Gastos e Ingresos para el usuario 1
+INSERT INTO `categorias` (`id_usuario`, `nombre_categoria`, `tipo`, `descripcion`, `icono`, `color`, `estado`) VALUES
+(1, 'Alimentación', 'gasto', 'Gastos en comida, supermercado y restaurantes', 'mdi:food', '#ff9999', 1),
+(1, 'Transporte', 'gasto', 'Pasajes, gasolina, taxis o transporte público', 'mdi:car', '#99ccff', 1),
+(1, 'Servicios Básicos', 'gasto', 'Agua, luz, internet, teléfono', 'mdi:bolt', '#ffff99', 1),
+(1, 'Entretenimiento', 'gasto', 'Cine, salidas, conciertos y hobbies', 'mdi:movie', '#cc99ff', 1),
+(1, 'Salud y Bienestar', 'gasto', 'Medicinas, consultas médicas y gimnasio', 'mdi:heart-pulse', '#ff99cc', 1),
+(1, 'Educación', 'gasto', 'Cursos, libros, matrícula o universidad', 'mdi:school', '#99ff99', 1),
+(1, 'Salario', 'ingreso', 'Sueldo o nómina mensual', 'mdi:cash', '#66cc66', 1),
+(1, 'Ventas / Negocios', 'ingreso', 'Ingresos por ventas de productos o servicios', 'mdi:store', '#ffcc66', 1),
+(1, 'Inversiones', 'ingreso', 'Retornos o dividendos de inversiones', 'mdi:chart-line', '#6699ff', 1),
+(1, 'Otros Ingresos', 'ingreso', 'Regalos o ingresos extra ocasionales', 'mdi:gift', '#cccccc', 1);
 
 -- Movimientos de prueba iniciales para el usuario 1
 INSERT INTO `transacciones` (`id_usuario`, `id_categoria`, `tipo`, `monto`, `concepto`, `fecha_transaccion`) VALUES

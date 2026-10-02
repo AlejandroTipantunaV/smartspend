@@ -15,7 +15,7 @@ $transactionModel = new Transaction();
 $categoryModel = new Category();
 
 $transacciones = $transactionModel->getByUserId($idUsuario, $tipoFiltro);
-$categorias = $categoryModel->getAll();
+$categorias = $categoryModel->getAll($idUsuario);
 $flash = pull_flash();
 
 $basePath = '../';
