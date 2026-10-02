@@ -13,8 +13,10 @@ if ($id <= 0) {
     exit;
 }
 
+$idUsuario = (int)($_SESSION['user_id'] ?? $_SESSION['id_usuario'] ?? 0);
+
 $categoryModel = new Category();
-$category = $categoryModel->getById($id);
+$category = $categoryModel->getById($id, $idUsuario);
 
 if (!$category) {
     set_flash('danger', 'Categoría no encontrada.');

@@ -5,7 +5,7 @@
             "label": "Inicio",
             "url": "index.php",
             "icon": "lucide:home",
-            "auth": "all"
+            "auth": "guest"
         },
         {
             "id": "login",

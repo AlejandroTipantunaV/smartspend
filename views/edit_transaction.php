@@ -13,7 +13,7 @@ $transactionModel = new Transaction();
 $categoryModel = new Category();
 
 $transaccion = $id > 0 ? $transactionModel->getById($id, $idUsuario) : null;
-$categorias = $categoryModel->getAll();
+$categorias = $categoryModel->getAll($idUsuario);
 $flash = pull_flash();
 
 $basePath = '../';

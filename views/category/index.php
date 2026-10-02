@@ -6,9 +6,10 @@ require_once __DIR__ . '/../../includes/session.php';
 require_once __DIR__ . '/../../models/Category.php';
 
 require_login('../../views/auth/login.php');
+$idUsuario = (int)($_SESSION['user_id'] ?? $_SESSION['id_usuario'] ?? 0);
 
 $categoryModel = new Category();
-$categorias = $categoryModel->getAll();
+$categorias = $categoryModel->getAll($idUsuario);
 $flash = pull_flash();
 
 $basePath = '../../';
@@ -99,16 +100,29 @@ include __DIR__ . '/../../includes/header.php';
                                        href="edit.php?id=<?php echo (int) $c['id_categoria']; ?>">
                                         Editar
                                     </a>
-                                    <form method="POST"
-                                          action="<?php echo e($basePath); ?>controllers/CategoryController.php?action=delete"
-                                          class="inline-form js-confirm-delete"
-                                          data-confirm="¿Eliminar esta categoría? Si tiene transacciones asignadas no podrás eliminarla.">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden"
-                                               name="id_categoria"
-                                               value="<?php echo (int) $c['id_categoria']; ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger" style="margin: 0;">Borrar</button>
-                                    </form>
+                                    <?php if ($isActive): ?>
+                                        <form method="POST"
+                                              action="<?php echo e($basePath); ?>controllers/CategoryController.php?action=delete"
+                                              class="inline-form js-confirm-delete"
+                                              data-confirm="¿Estás seguro de desactivar esta categoría? No aparecerá al crear nuevas transacciones, pero se conservará en tu historial.">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden"
+                                                   name="id_categoria"
+                                                   value="<?php echo (int) $c['id_categoria']; ?>">
+                                            <button type="submit" class="btn btn-sm btn-danger" style="margin: 0; width: 90px; text-align: center;">Desactivar</button>
+                                        </form>
+                                    <?php else: ?>
+                                        <form method="POST"
+                                              action="<?php echo e($basePath); ?>controllers/CategoryController.php?action=activate"
+                                              class="inline-form js-confirm-delete"
+                                              data-confirm="¿Estás seguro de reactivar esta categoría? Volverá a estar disponible para nuevas transacciones.">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden"
+                                                   name="id_categoria"
+                                                   value="<?php echo (int) $c['id_categoria']; ?>">
+                                            <button type="submit" class="btn btn-sm" style="margin: 0; width: 90px; text-align: center; background-color: #00695c; color: white; border-color: #00695c;">Activar</button>
+                                        </form>
+                                    <?php endif; ?>
                                 </div>
                             </td>
                         </tr>

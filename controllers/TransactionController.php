@@ -25,7 +25,7 @@ class TransactionController
         $idUsuario = require_login();
         $this->assertPost();
 
-        $result = $this->validateInput($_POST);
+        $result = $this->validateInput($_POST, $idUsuario);
         if (!$result['ok']) {
             $this->flashAndRedirect('danger', implode(' ', $result['errors']));
         }
@@ -48,7 +48,7 @@ class TransactionController
         $id = (int) ($_POST['id_transaccion'] ?? 0);
         $this->findOwnedOrFail($id, $idUsuario);
 
-        $result = $this->validateInput($_POST);
+        $result = $this->validateInput($_POST, $idUsuario);
         if (!$result['ok']) {
             $this->flashAndRedirect(
                 'danger',
@@ -109,7 +109,7 @@ class TransactionController
     /**
      * @return array{ok:bool, errors:array<int,string>, data:array<string,mixed>}
      */
-    private function validateInput(array $input): array
+    private function validateInput(array $input, int $idUsuario): array
     {
         $errors = [];
 
@@ -140,8 +140,8 @@ class TransactionController
             $errors[] = 'Ingrese una fecha válida.';
         }
 
-        if (empty($errors) && !$this->categories->belongsToType($idCategoria, $tipo)) {
-            $errors[] = 'La categoría no corresponde al tipo seleccionado.';
+        if (empty($errors) && !$this->categories->belongsToType($idCategoria, $tipo, $idUsuario)) {
+            $errors[] = 'La categoría no corresponde al tipo seleccionado o no te pertenece.';
         }
 
         return [
