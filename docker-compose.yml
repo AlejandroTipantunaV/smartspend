@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+    # PHP + Apache Web Server
+    web:
+        build: .
+        container_name: smartspend_web
+        restart: always
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/var/www/html
+        environment:
+            - DB_HOST=db
+            - DB_NAME=smartspend
+            - DB_USER=root
+            - DB_PASS=secret
+        depends_on:
+            - db
+
+    # MySQL Database
+    db:
+        image: mysql:8.0
+        container_name: smartspend_db
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: smartspend
+        ports:
+            - "3307:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+            - ./sql/script_database.sql:/docker-entrypoint-initdb.d/script_database.sql:ro
+
+    # phpMyAdmin Database Manager
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: smartspend_phpmyadmin
+        restart: always
+        ports:
+            - "8081:80"
+        environment:
+            PMA_HOST: db
+            MYSQL_ROOT_PASSWORD: secret
+        depends_on:
+            - db
+
+volumes:
+    db_data:
