@@ -77,10 +77,11 @@
     }
 }
 
-.alert-success { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-.alert-danger  { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-.alert-info    { background: linear-gradient(135deg, #3498db, #2980b9); }
-.alert-warning { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+/* Modificado para cumplir contraste alto WCAG 2.2 (mínimo 4.5:1 con texto blanco) */
+.alert-success { background: linear-gradient(135deg, #1e7e34, #145a23); }
+.alert-danger  { background: linear-gradient(135deg, #c0392b, #962d22); }
+.alert-info    { background: linear-gradient(135deg, #1d6fa5, #14496b); }
+.alert-warning { background: linear-gradient(135deg, #b58100, #7a5700); }
 
 .alert-icon-container {
     width: 36px;

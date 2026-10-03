@@ -15,7 +15,7 @@ $transactionModel = new Transaction();
 $categoryModel = new Category();
 
 $transacciones = $transactionModel->getByUserId($idUsuario, $tipoFiltro);
-$categorias = $categoryModel->getAll();
+$categorias = $categoryModel->getAll($idUsuario);
 $flash = pull_flash();
 
 $basePath = '../';
@@ -24,14 +24,14 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <section class="page-header">
-    <h2>Mis Transacciones</h2>
+    <h1>Mis Transacciones</h1>
     <p class="text-muted">Registra, filtra y administra tus ingresos y gastos.</p>
 </section>
 
 <?php include __DIR__ . '/partials/flash.php'; ?>
 
 <section class="card-panel" aria-labelledby="form-title">
-    <h3 id="form-title">Agregar transacción</h3>
+    <h2 id="form-title">Agregar transacción</h2>
     <?php
     $formAction = $basePath . 'controllers/TransactionController.php?action=store';
     $submitLabel = 'Guardar transacción';
@@ -51,7 +51,7 @@ include __DIR__ . '/../includes/header.php';
                 <option value="todos" <?php echo $filtroTipo === 'todos' ? 'selected' : ''; ?>>Todos</option>
                 <option value="ingreso" <?php echo $filtroTipo === 'ingreso' ? 'selected' : ''; ?>>Ingresos</option>
                 <option value="gasto" <?php echo $filtroTipo === 'gasto' ? 'selected' : ''; ?>>Gastos</option>
-            </select>
+            </select><button class="btn btn-outline" type="submit">Filtrar</button>
         </form>
     </div>
 
@@ -100,6 +100,7 @@ include __DIR__ . '/../includes/header.php';
                                       action="<?php echo e($basePath); ?>controllers/TransactionController.php?action=delete"
                                       class="inline-form js-confirm-delete"
                                       data-confirm="¿Eliminar esta transacción? Esta acción no se puede deshacer.">
+                                    <?= csrf_field() ?>
                                     <input type="hidden"
                                            name="id_transaccion"
                                            value="<?php echo (int) $t['id_transaccion']; ?>">

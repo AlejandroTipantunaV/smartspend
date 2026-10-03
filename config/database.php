@@ -31,7 +31,7 @@ class Database {
             ];
             $this->conn = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $e) {
-            die("Error en la conexión con la base de datos: " . $e->getMessage());
+            throw $e;
         }
     }
 

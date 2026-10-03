@@ -5,7 +5,7 @@
             "label": "Inicio",
             "url": "index.php",
             "icon": "lucide:home",
-            "auth": "all"
+            "auth": "guest"
         },
         {
             "id": "login",
@@ -33,6 +33,13 @@
             "label": "Transacciones",
             "url": "views/transactions.php",
             "icon": "lucide:arrow-left-right",
+            "auth": "user"
+        },
+        {
+            "id": "categories",
+            "label": "Categorías",
+            "url": "views/category/index.php",
+            "icon": "lucide:tags",
             "auth": "user"
         },
         {

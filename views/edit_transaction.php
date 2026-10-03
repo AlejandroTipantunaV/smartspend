@@ -13,7 +13,7 @@ $transactionModel = new Transaction();
 $categoryModel = new Category();
 
 $transaccion = $id > 0 ? $transactionModel->getById($id, $idUsuario) : null;
-$categorias = $categoryModel->getAll();
+$categorias = $categoryModel->getAll($idUsuario);
 $flash = pull_flash();
 
 $basePath = '../';
@@ -22,7 +22,7 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <section class="page-header">
-    <h2>Editar transacción</h2>
+    <h1>Editar transacción</h1>
     <p class="text-muted"><a href="transactions.php">← Volver al historial</a></p>
 </section>
 

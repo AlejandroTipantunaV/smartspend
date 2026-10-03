@@ -41,3 +41,8 @@ textarea:focus-visible {
     outline-offset: 3px;
     border-radius: 2px;
 }
+
+:focus-visible, .form-control:focus-visible, .form-select:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+.skip-link { position: fixed; }
+.skip-link:focus { top: 0; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

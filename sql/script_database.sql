@@ -4,12 +4,9 @@
 -- Asignatura: Desarrollo de Aplicaciones Web
 -- ============================================================
 
--- 1. Creación e inicialización de la base de datos (Entorno Local)
-CREATE DATABASE IF NOT EXISTS `smartspend` 
-  DEFAULT CHARACTER SET utf8mb4 
-  COLLATE utf8mb4_unicode_ci;
-
-USE `smartspend`;
+-- 1. Inicialización del entorno
+-- (Asegúrate de haber seleccionado una base de datos antes de ejecutar este script)
+-- Ejemplo: USE `tu_base_de_datos`;
 
 -- Desactivar temporalmente restricciones de claves foráneas para evitar conflictos en reinicialización
 SET FOREIGN_KEY_CHECKS = 0;
@@ -36,8 +33,14 @@ CREATE TABLE `usuarios` (
 -- ============================================================
 CREATE TABLE `categorias` (
   `id_categoria` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_usuario` INT NOT NULL,
   `nombre_categoria` VARCHAR(50) NOT NULL,
-  `tipo` ENUM('ingreso', 'gasto') NOT NULL
+  `tipo` ENUM('ingreso', 'gasto') NOT NULL,
+  `descripcion` VARCHAR(255) DEFAULT NULL,
+  `icono` VARCHAR(100) DEFAULT NULL,
+  `color` VARCHAR(30) DEFAULT NULL,
+  `estado` TINYINT(1) DEFAULT 1,
+  `fecha` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
@@ -52,37 +55,48 @@ CREATE TABLE `transacciones` (
   `monto` DECIMAL(10, 2) NOT NULL,
   `concepto` VARCHAR(255) NOT NULL,
   `fecha_transaccion` DATE NOT NULL,
-  `fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT `fk_transacciones_usuarios` 
-    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios`(`id_usuario`) 
-    ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_transacciones_categorias` 
-    FOREIGN KEY (`id_categoria`) REFERENCES `categorias`(`id_categoria`) 
-    ON DELETE RESTRICT ON UPDATE CASCADE
+  `fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- ============================================================
+-- 5. RESTRICCIONES (CONSTRAINTS)
+-- ============================================================
+
+ALTER TABLE `transacciones`
+  ADD CONSTRAINT `fk_transacciones_usuarios` 
+    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios`(`id_usuario`) 
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_transacciones_categorias` 
+    FOREIGN KEY (`id_categoria`) REFERENCES `categorias`(`id_categoria`) 
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE `categorias`
+  ADD CONSTRAINT `fk_categorias_usuarios` 
+    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios`(`id_usuario`) 
+    ON DELETE CASCADE ON UPDATE CASCADE;
+
 
 -- ============================================================
--- 5. DATOS INICIALES Y PRUEBAS DE FUNCIONAMIENTO
+-- 6. DATOS INICIALES Y PRUEBAS DE FUNCIONAMIENTO
 -- ============================================================
-
--- Categorías base de Gastos e Ingresos
-INSERT INTO `categorias` (`nombre_categoria`, `tipo`) VALUES
-('Alimentación', 'gasto'),
-('Transporte', 'gasto'),
-('Servicios Básicos', 'gasto'),
-('Entretenimiento', 'gasto'),
-('Salud y Bienestar', 'gasto'),
-('Educación', 'gasto'),
-('Salario', 'ingreso'),
-('Ventas / Negocios', 'ingreso'),
-('Inversiones', 'ingreso'),
-('Otros Ingresos', 'ingreso');
 
 -- Usuario de prueba inicial
 -- Nota: La contraseña en texto plano es 'password123', encriptada con bcrypt (password_hash)
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `correo`, `password`) VALUES
-(1, 'Gabriel Tipantuña', 'gabriel@ejemplo.com', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe1e82K1.fE2W5KzP5oU1F0/y4R3Zq79C');
+(1, 'Gabriel Tipantuña', 'gabriel@ejemplo.com', '$2y$10$9uhYjscXM3gNVpldtaOJY.oavvvy6sQ.gRg/KRzpkQPsrA/t5m6Re');
+
+-- Categorías base de Gastos e Ingresos para el usuario 1
+INSERT INTO `categorias` (`id_usuario`, `nombre_categoria`, `tipo`, `descripcion`, `icono`, `color`, `estado`) VALUES
+(1, 'Alimentación', 'gasto', 'Gastos en comida, supermercado y restaurantes', 'mdi:food', '#ff9999', 1),
+(1, 'Transporte', 'gasto', 'Pasajes, gasolina, taxis o transporte público', 'mdi:car', '#99ccff', 1),
+(1, 'Servicios Básicos', 'gasto', 'Agua, luz, internet, teléfono', 'mdi:bolt', '#ffff99', 1),
+(1, 'Entretenimiento', 'gasto', 'Cine, salidas, conciertos y hobbies', 'mdi:movie', '#cc99ff', 1),
+(1, 'Salud y Bienestar', 'gasto', 'Medicinas, consultas médicas y gimnasio', 'mdi:heart-pulse', '#ff99cc', 1),
+(1, 'Educación', 'gasto', 'Cursos, libros, matrícula o universidad', 'mdi:school', '#99ff99', 1),
+(1, 'Salario', 'ingreso', 'Sueldo o nómina mensual', 'mdi:cash', '#66cc66', 1),
+(1, 'Ventas / Negocios', 'ingreso', 'Ingresos por ventas de productos o servicios', 'mdi:store', '#ffcc66', 1),
+(1, 'Inversiones', 'ingreso', 'Retornos o dividendos de inversiones', 'mdi:chart-line', '#6699ff', 1),
+(1, 'Otros Ingresos', 'ingreso', 'Regalos o ingresos extra ocasionales', 'mdi:gift', '#cccccc', 1);
 
 -- Movimientos de prueba iniciales para el usuario 1
 INSERT INTO `transacciones` (`id_usuario`, `id_categoria`, `tipo`, `monto`, `concepto`, `fecha_transaccion`) VALUES

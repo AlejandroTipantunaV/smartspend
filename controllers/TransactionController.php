@@ -25,7 +25,7 @@ class TransactionController
         $idUsuario = require_login();
         $this->assertPost();
 
-        $result = $this->validateInput($_POST);
+        $result = $this->validateInput($_POST, $idUsuario);
         if (!$result['ok']) {
             $this->flashAndRedirect('danger', implode(' ', $result['errors']));
         }
@@ -48,7 +48,7 @@ class TransactionController
         $id = (int) ($_POST['id_transaccion'] ?? 0);
         $this->findOwnedOrFail($id, $idUsuario);
 
-        $result = $this->validateInput($_POST);
+        $result = $this->validateInput($_POST, $idUsuario);
         if (!$result['ok']) {
             $this->flashAndRedirect(
                 'danger',
@@ -109,7 +109,7 @@ class TransactionController
     /**
      * @return array{ok:bool, errors:array<int,string>, data:array<string,mixed>}
      */
-    private function validateInput(array $input): array
+    private function validateInput(array $input, int $idUsuario): array
     {
         $errors = [];
 
@@ -127,20 +127,21 @@ class TransactionController
             $errors[] = 'Seleccione una categoría.';
         }
 
-        if ($montoRaw === '' || !is_numeric($montoRaw) || (float) $montoRaw <= 0) {
+        if ($montoRaw === '' || !preg_match('/^\d{1,8}(\.\d{1,2})?$/', $montoRaw) || (float) $montoRaw <= 0 || (float) $montoRaw > 99999999.99) {
             $errors[] = 'El monto debe ser un número mayor a 0.';
         }
 
-        if ($concepto === '' || mb_strlen($concepto) < 3) {
+        if ($concepto === '' || mb_strlen($concepto) < 3 || mb_strlen($concepto) > 255) {
             $errors[] = 'El concepto debe tener al menos 3 caracteres.';
         }
 
-        if ($fecha === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha)) {
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $fecha);
+        if (!$date || $date->format('Y-m-d') !== $fecha || $fecha < '1000-01-01') {
             $errors[] = 'Ingrese una fecha válida.';
         }
 
-        if (empty($errors) && !$this->categories->belongsToTipo($idCategoria, $tipo)) {
-            $errors[] = 'La categoría no corresponde al tipo seleccionado.';
+        if (empty($errors) && !$this->categories->belongsToType($idCategoria, $tipo, $idUsuario)) {
+            $errors[] = 'La categoría no corresponde al tipo seleccionado o no te pertenece.';
         }
 
         return [
@@ -165,6 +166,15 @@ class TransactionController
 }
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
+require_login();
+
+$allowedActions = ['store', 'update', 'delete'];
+if (!in_array($action, $allowedActions, true)) {
+    header('Location: ../views/transactions.php');
+    exit;
+}
+
+verify_csrf();
 $controller = new TransactionController();
 
 switch ($action) {
@@ -177,7 +187,4 @@ switch ($action) {
     case 'delete':
         $controller->delete();
         break;
-    default:
-        header('Location: ../views/transactions.php');
-        exit;
 }
