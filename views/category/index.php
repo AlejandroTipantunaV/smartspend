@@ -32,7 +32,7 @@ include __DIR__ . '/../../includes/header.php';
 <!-- Categories List -->
 <section class="card-panel" aria-labelledby="historial-title">
     <div class="section-toolbar">
-        <h3 id="historial-title">Mis Categorías</h3>
+        <h2 id="historial-title">Mis Categorías</h2>
     </div>
 
     <?php if (empty($categorias)): ?>

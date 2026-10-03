@@ -31,7 +31,7 @@ include __DIR__ . '/../includes/header.php';
 <?php include __DIR__ . '/partials/flash.php'; ?>
 
 <section class="card-panel" aria-labelledby="form-title">
-    <h3 id="form-title">Agregar transacción</h3>
+    <h2 id="form-title">Agregar transacción</h2>
     <?php
     $formAction = $basePath . 'controllers/TransactionController.php?action=store';
     $submitLabel = 'Guardar transacción';
